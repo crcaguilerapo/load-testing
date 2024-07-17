@@ -2,6 +2,7 @@ package org.crcaguilerapo.adapters.in.http;
 
 import com.linecorp.armeria.common.HttpResponse;
 import com.linecorp.armeria.common.HttpStatus;
+import com.linecorp.armeria.common.MediaType;
 import com.linecorp.armeria.server.annotation.Get;
 import com.linecorp.armeria.server.annotation.Post;
 import org.crcaguilerapo.adapters.out.memory.ListRepository;
@@ -19,7 +20,7 @@ public final class MessageController {
 
   @Get("/messages")
   public HttpResponse getMessages() {
-    var response = messageUseCase.getMessages(List.of(1L, 2L));
+    List<Message> response = messageUseCase.getMessages(List.of(1L, 2L));
     return HttpResponse.ofJson(
             HttpStatus.OK,
             response
@@ -30,7 +31,9 @@ public final class MessageController {
   public HttpResponse saveMessage(Message message) {
     messageUseCase.saveMessage(message);
     return HttpResponse.of(
-            HttpStatus.OK
+            HttpStatus.OK,
+            MediaType.PLAIN_TEXT_UTF_8,
+            ""
     );
   }
 }
